@@ -23,7 +23,7 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
 
     paths, labels = load_image_paths_and_labels(task)
     print(f"\n[{task}/{model_name}] Dataset: {len(paths)} images, "
-          f"class balance: {labels.sum()}/{len(labels)-labels.sum()}")
+          f"class balance: {labels.sum()}/{len(labels)-labels.sum()}", flush=True)
 
     skf = StratifiedKFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
     fold_rows = []
@@ -35,7 +35,7 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
     logs_dir.mkdir(parents=True, exist_ok=True)
 
     for fold, (tr_idx, va_idx) in enumerate(skf.split(paths, labels), start=1):
-        print(f"\n  Fold {fold}/{N_FOLDS} — train={len(tr_idx)}, val={len(va_idx)}")
+        print(f"\n  Fold {fold}/{N_FOLDS} — train={len(tr_idx)}, val={len(va_idx)}", flush=True)
         set_seeds(SEED + fold)
 
         train_ds = make_dataset(paths[tr_idx], labels[tr_idx],
@@ -55,24 +55,18 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
             epochs=EPOCHS, callbacks=cb, verbose=0,
         )
         stopped = len(history.history["loss"])
-        print(f"    Stopped at epoch {stopped}")
+        print(f"    Stopped at epoch {stopped}", flush=True)
 
-        # --- collect predictions ---
-        y_true, y_prob = [], []
-        for x_batch, y_batch in val_ds:
-            probs = model.predict(x_batch, verbose=0).flatten()
-            y_prob.extend(probs.tolist())
-            y_true.extend(y_batch.numpy().tolist())
-
-        y_true = np.array(y_true)
-        y_prob = np.array(y_prob)
+        # --- collect predictions (single predict call avoids tf.function retracing) ---
+        y_prob = model.predict(val_ds, verbose=0).flatten()
+        y_true = np.concatenate([y_batch.numpy() for _, y_batch in val_ds])
         y_pred = (y_prob >= 0.5).astype(int)
 
         p, r, f, _ = precision_recall_fscore_support(
             y_true, y_pred, average="binary", zero_division=0)
         acc = accuracy_score(y_true, y_pred)
 
-        print(f"    F1={f:.4f}  Prec={p:.4f}  Rec={r:.4f}  Acc={acc:.4f}")
+        print(f"    F1={f:.4f}  Prec={p:.4f}  Rec={r:.4f}  Acc={acc:.4f}", flush=True)
 
         fold_rows.append({
             "task": task, "model": model_name, "fold": fold,
@@ -89,7 +83,7 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
         if f > best_f1:
             best_f1 = f
             model.save(logs_dir / f"best_{task}_{model_name}.keras")
-            print(f"    *** New best model saved (F1={best_f1:.4f})")
+            print(f"    *** New best model saved (F1={best_f1:.4f})", flush=True)
 
         tf.keras.backend.clear_session()
 
@@ -98,6 +92,6 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
     df.to_csv(out_csv, index=False)
 
     print(f"\n[{task}/{model_name}] CV complete — "
-          f"mean F1={df['f1'].mean():.4f} ± {df['f1'].std():.4f}")
-    print(f"  Results saved to {out_csv}")
+          f"mean F1={df['f1'].mean():.4f} ± {df['f1'].std():.4f}", flush=True)
+    print(f"  Results saved to {out_csv}", flush=True)
     return df

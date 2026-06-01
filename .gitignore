@@ -1,0 +1,31 @@
+# Virtual environment
+.venv/
+
+# Dataset symlinks — data lives outside the repo
+data/
+
+# External dataset (too large for git)
+external/kaggle_irt_pv/
+
+# Trained model weights (large binaries — exclude specific extensions, not the folder)
+results/logs/*.keras
+results/logs/*.h5
+results/logs/*.weights.h5
+!results/logs/.gitkeep
+
+# Python artefacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# TensorBoard logs
+logs/

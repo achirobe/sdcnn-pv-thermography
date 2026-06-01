@@ -12,7 +12,8 @@
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\usepackage{siunitx}
+% \usepackage{siunitx}  % removed: version conflicts with MiKTeX 22.1
+\newcommand{\SI}[2]{#1\,\text{#2}}
 \usepackage{subcaption}
 \usepackage{cleveref}
 \usepackage{microtype}
@@ -90,12 +91,12 @@ Grad-CAM
 \section{Introduction}
 \label{sec:intro}
 
-The global installed PV capacity exceeded \SI{1.6}{\tera\watt} in 2024,
+The global installed PV capacity exceeded 1.6\,TW in 2024,
 with rapid growth driven by falling hardware costs and supportive policy
 frameworks~\cite{irena2024}.
 Ensuring sustained energy yield requires timely detection of panel defects,
 since even localised hot-spots can trigger thermal runaway, reduce module
-efficiency by \SI{10}{\percent}--\SI{40}{\percent}, and create fire hazards
+efficiency by 10\%--40\%, and create fire hazards
 in large utility-scale plants~\cite{buerhop2018}.
 
 Infrared thermography has become the standard non-destructive inspection
@@ -263,7 +264,7 @@ Grad-CAM~\cite{selvaraju2017} visualisation.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{figures/sdcnn_arch_export.png}
+  \includegraphics[width=\linewidth]{figures/sdcnn_tikz.pdf}
   \caption{SDCNN architecture. Feature-map spatial dimensions are shown
            below each block; the Block-3 output is the Grad-CAM target layer.}
   \label{fig:sdcnn_arch}

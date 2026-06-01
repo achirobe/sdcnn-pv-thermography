@@ -181,13 +181,27 @@ def gen_summary_tables():
 
 def gen_gradcam():
     print("\n[6] Grad-CAM grid")
+    out_path = FIGS / "gradcam_grid.png"
+    if out_path.exists():
+        print(f"  Already exists → {out_path}")
+        return
     model_path = RESULTS_DIR / "logs" / "best_detection_sdcnn.keras"
     if not model_path.exists():
         print(f"  [skip] {model_path} not found — run exp01 first")
         return
     try:
+        import tensorflow as tf
         from src.evaluation.gradcam import generate_gradcam_figure
-        generate_gradcam_figure()
+        from src.data.loaders import load_image_paths_and_labels, make_dataset
+        model = tf.keras.models.load_model(model_path)
+        paths, labels = load_image_paths_and_labels("detection")
+        ds = make_dataset(paths, labels, augment=False, training=False)
+        y_prob = model.predict(ds, verbose=0).flatten()
+        y_pred = (y_prob >= 0.5).astype(int)
+        generate_gradcam_figure(
+            model=model, val_paths=paths, y_true=labels, y_pred=y_pred,
+            last_conv_name="conv3", save_path=out_path,
+        )
     except Exception as e:
         print(f"  [error] Grad-CAM failed: {e}")
 

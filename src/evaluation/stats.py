@@ -37,8 +37,12 @@ def paired_tests(task: str, baseline: str = "sdcnn"):
         b = pivot[other].values
 
         t_stat, t_p = stats.ttest_rel(a, b)
-        w_stat, w_p = stats.wilcoxon(a, b, zero_method="zsplit",
-                                     alternative="two-sided", method="approx")
+        try:
+            w_stat, w_p = stats.wilcoxon(a, b, zero_method="zsplit",
+                                         alternative="two-sided", method="approx")
+        except ValueError:
+            # All differences are zero — models are indistinguishable
+            w_stat, w_p = 0.0, 1.0
 
         diff = a - b
         cohen_d = diff.mean() / (diff.std(ddof=1) + 1e-12)

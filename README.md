@@ -10,6 +10,9 @@
 
 Complete codebase and results for an EAAI journal paper on automated PV fault detection from UAV-acquired infrared thermography (IRT) images.
 
+**Dataset:** The Ghana IRT-PV dataset is hosted in a separate private repository.
+Access requires owner approval — request via [github.com/achirobe/ghana-irt-pv-dataset](https://github.com/achirobe/ghana-irt-pv-dataset) or email rachirobe@gmail.com.
+
 **Two classification tasks:**
 | Task | Images | Classes | Balance |
 |------|--------|---------|---------|

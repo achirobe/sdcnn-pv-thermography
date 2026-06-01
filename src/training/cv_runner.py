@@ -57,6 +57,13 @@ def run_cv(task: str, model_name: str, build_fn, augment_override: bool = True):
         stopped = len(history.history["loss"])
         print(f"    Stopped at epoch {stopped}", flush=True)
 
+        # Save training history for learning-curve plots
+        import json
+        hist_path = logs_dir / f"history_{task}_{model_name}_fold{fold}.json"
+        hist_data = {k: [float(v) for v in vals]
+                     for k, vals in history.history.items()}
+        hist_path.write_text(json.dumps(hist_data))
+
         # --- collect predictions (single predict call avoids tf.function retracing) ---
         y_prob = model.predict(val_ds, verbose=0).flatten()
         y_true = np.concatenate([y_batch.numpy() for _, y_batch in val_ds])

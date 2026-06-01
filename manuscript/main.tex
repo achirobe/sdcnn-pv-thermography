@@ -242,6 +242,20 @@ Augmentation is disabled for validation and test sets.
 \section{Methodology}
 \label{sec:method}
 
+\Cref{fig:pipeline} provides an overview of the complete experimental
+pipeline from data acquisition to cross-domain validation.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/methodology_flowchart.png}
+  \caption{End-to-end methodology pipeline: IRT data collection
+           $\rightarrow$ pre-processing $\rightarrow$ model selection
+           (SDCNN / VGG-16 / MobileNetV2 / EfficientNet-B0)
+           $\rightarrow$ 5-fold CV $\rightarrow$ statistical evaluation
+           $\rightarrow$ cross-domain validation.}
+  \label{fig:pipeline}
+\end{figure}
+
 \subsection{SDCNN Architecture}
 \label{sec:sdcnn}
 

@@ -1,0 +1,6 @@
+task,model,fold,precision,recall,f1,accuracy
+diagnosis,sdcnn,1,1.0,1.0,1.0,1.0
+diagnosis,sdcnn,2,1.0,1.0,1.0,1.0
+diagnosis,sdcnn,3,1.0,1.0,1.0,1.0
+diagnosis,sdcnn,4,1.0,1.0,1.0,1.0
+diagnosis,sdcnn,5,1.0,1.0,1.0,1.0

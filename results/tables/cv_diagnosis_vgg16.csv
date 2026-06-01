@@ -1,0 +1,6 @@
+task,model,fold,precision,recall,f1,accuracy
+diagnosis,vgg16,1,0.9,1.0,0.9473684210526315,0.9444444444444444
+diagnosis,vgg16,2,1.0,1.0,1.0,1.0
+diagnosis,vgg16,3,1.0,1.0,1.0,1.0
+diagnosis,vgg16,4,1.0,1.0,1.0,1.0
+diagnosis,vgg16,5,1.0,1.0,1.0,1.0

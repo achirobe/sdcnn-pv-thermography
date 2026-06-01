@@ -30,12 +30,8 @@ __pycache__/
 # TensorBoard logs
 logs/
 
-# LaTeX auxiliary files
-manuscript/*.aux
-manuscript/*.log
-manuscript/*.out
-manuscript/*.spl
-manuscript/main.pdf
+# Manuscript — kept local, not published to the code repo
+manuscript/
 
 # Large numpy prediction arrays — not needed for reproducibility
 results/tables/preds_*.npy

@@ -1,42 +1,92 @@
 #!/bin/bash
-# End-to-end orchestration for Week 1 experiments.
-# Run from project root: bash run_all.sh
-# Week 2 (cross-domain) is separate — see experiments/exp06_cross_domain/run.py
+# End-to-end orchestration for all experiments.
+# Usage: bash run_all.sh [--skip-done] [--no-ablation]
+#
+# --skip-done : skip experiments where output CSV already exists
+# --no-ablation : skip the long exp08 extended ablation
 
 set -e
 PYTHON=".venv/bin/python"
 cd "$(dirname "$0")"
 
-echo "============================================"
-echo " PV-IRT-EAAI — Week 1 Experiment Pipeline"
-echo "============================================"
+SKIP_DONE=0
+NO_ABLATION=0
+for arg in "$@"; do
+  case $arg in
+    --skip-done)   SKIP_DONE=1 ;;
+    --no-ablation) NO_ABLATION=1 ;;
+  esac
+done
+
+run_exp() {
+  local name="$1"; local script="$2"; local check_csv="$3"
+  echo ""
+  echo "════════════════════════════════════════════"
+  echo " $name"
+  echo "════════════════════════════════════════════"
+  if [ "$SKIP_DONE" -eq 1 ] && [ -n "$check_csv" ] && [ -f "$check_csv" ]; then
+    echo " [SKIPPED] $check_csv already exists"
+    return
+  fi
+  $PYTHON "$script"
+}
+
+echo "════════════════════════════════════════════"
+echo " PV-IRT-EAAI — Full Experiment Pipeline"
+echo "════════════════════════════════════════════"
+
+run_exp "Exp01: 5-fold CV — SDCNN + VGG-16" \
+  experiments/exp01_cv_baseline/run.py \
+  results/tables/cv_detection_sdcnn.csv
+
+run_exp "Exp02: 5-fold CV — MobileNetV2 + EfficientNet-B0" \
+  experiments/exp02_modern_baselines/run.py \
+  results/tables/cv_detection_efficientnet_b0.csv
+
+run_exp "Exp03: Statistical significance tests" \
+  experiments/exp03_significance/run.py \
+  results/tables/stats_detection.csv
+
+run_exp "Exp04: Augmentation ablation (SDCNN with/without aug)" \
+  experiments/exp04_augment_ablation/run.py \
+  results/tables/cv_detection_sdcnn_noaug.csv
+
+run_exp "Exp05: Grad-CAM figures + confusion matrices" \
+  experiments/exp05_gradcam/run.py \
+  results/figures/gradcam_grid.png
+
+run_exp "Exp06: Zero-shot cross-domain (Pierdicca IRT-PV)" \
+  experiments/exp06_cross_domain/run.py \
+  results/tables/cross_domain.csv
+
+if [ "$NO_ABLATION" -eq 0 ]; then
+  run_exp "Exp08: Extended ablation study (depth/dropout/finetune/resolution)" \
+    experiments/exp08_ablation_extended/run.py \
+    results/tables/ablation_all.csv
+fi
 
 echo ""
-echo "[1/5] Exp01: 5-fold CV — SDCNN + VGG16"
-$PYTHON experiments/exp01_cv_baseline/run.py
-
-echo ""
-echo "[2/5] Exp02: 5-fold CV — MobileNetV2 + EfficientNet-B0"
-$PYTHON experiments/exp02_modern_baselines/run.py
-
-echo ""
-echo "[3/5] Exp03: Statistical significance tests"
-$PYTHON experiments/exp03_significance/run.py
-
-echo ""
-echo "[4/5] Exp04: Augmentation ablation"
-$PYTHON experiments/exp04_augment_ablation/run.py
-
-echo ""
-echo "[5/5] Exp05: Grad-CAM figures + confusion matrices"
-$PYTHON experiments/exp05_gradcam/run.py
-
-echo ""
-echo "Generating all publication figures..."
+echo "════════════════════════════════════════════"
+echo " Generating all publication figures..."
+echo "════════════════════════════════════════════"
 $PYTHON generate_figures.py
 
 echo ""
-echo "============================================"
-echo " Week 1 complete. Results in results/"
-echo " Run exp06 after downloading Kaggle dataset."
-echo "============================================"
+echo "════════════════════════════════════════════"
+echo " Filling LaTeX result placeholders..."
+echo "════════════════════════════════════════════"
+$PYTHON fill_results.py
+
+echo ""
+echo "════════════════════════════════════════════"
+echo " Compiling manuscript PDF..."
+echo "════════════════════════════════════════════"
+cd manuscript && bash compile.sh && cd ..
+
+echo ""
+echo "════════════════════════════════════════════"
+echo " ALL DONE"
+echo " PDF: manuscript/main_final.pdf"
+echo " Figures: results/figures/"
+echo " Tables:  results/tables/"
+echo "════════════════════════════════════════════"

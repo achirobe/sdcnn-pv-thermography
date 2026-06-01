@@ -344,10 +344,21 @@ discriminative regions.
 
 The best-fold model weights (trained exclusively on the Ghana dataset)
 are applied without fine-tuning to the Pierdicca dataset.
+\Cref{fig:cross_domain_pipeline} illustrates the evaluation pipeline.
 The domain gap is quantified as:
 \[
   \Delta_{\text{F1}} = \bar{F1}_{\text{in-domain}} - F1_{\text{cross-domain}}
 \]
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/cross_domain_pipeline.png}
+  \caption{Zero-shot cross-domain evaluation pipeline. Weights trained solely
+           on the Ghana dataset are applied directly to the Pierdicca Italian
+           PV dataset with no fine-tuning. Domain differences (climate,
+           camera, altitude) induce a measurable F1 gap.}
+  \label{fig:cross_domain_pipeline}
+\end{figure}
 
 
 %% ═══════════════════════════════════════════════════════════════════════════

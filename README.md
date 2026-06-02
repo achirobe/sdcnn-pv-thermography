@@ -1,6 +1,6 @@
 # SDCNN-VGG16 IRT-PV — EAAI Submission
 
-> **"SDCNN: A Shallow Deep Convolutional Neural Network for Automated Fault Detection
+> **"SDCNN: A Shallow Dense Convolutional Neural Network for Automated Fault Detection
 > and Diagnosis in Photovoltaic Systems via Infrared Thermography"**  
 > Submitted to *Engineering Applications of Artificial Intelligence* (Elsevier Q1)
 
@@ -182,7 +182,7 @@ external/kaggle_irt_pv/kaggle_dataset/
 ```bibtex
 @article{achirobe2026sdcnn,
   author  = {Achirobe, Reamy Womodowe},
-  title   = {{SDCNN}: A Shallow Deep Convolutional Neural Network for Automated
+  title   = {{SDCNN}: A Shallow Dense Convolutional Neural Network for Automated
              Fault Detection and Diagnosis in Photovoltaic Systems via
              Infrared Thermography},
   journal = {Engineering Applications of Artificial Intelligence},

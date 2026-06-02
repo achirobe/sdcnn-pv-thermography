@@ -13,7 +13,7 @@
         </mxCell>
 
         <!-- ── DATA COLLECTION ── -->
-        <mxCell id="dc" value="&lt;b&gt;1. Data Collection&lt;/b&gt;&lt;br/&gt;UAV-mounted IRT camera&lt;br/&gt;Ghana PV installation&lt;br/&gt;230 detection / 88 diagnosis images"
+        <mxCell id="dc" value="&lt;b&gt;1. Data Collection&lt;/b&gt;&lt;br/&gt;Handheld FLIR C5 thermal camera&lt;br/&gt;Navrongo VRA Solar Plant, Ghana&lt;br/&gt;228 detection / 86 diagnosis images"
           style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;verticalAlign=middle;"
           vertex="1" parent="1">
           <mxGeometry x="140" y="90" width="200" height="80" as="geometry"/>
@@ -102,8 +102,13 @@
         <mxCell id="a9" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="mob" target="cv" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="a10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="eff" target="cv" parent="1">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="a10" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" source="eff" target="cv" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="637" y="580"/>
+              <mxPoint x="350" y="580"/>
+            </Array>
+          </mxGeometry>
         </mxCell>
 
         <!-- ── EVALUATION ── -->
@@ -129,17 +134,17 @@
         </mxCell>
 
         <!-- ── TASK SPLIT NOTE ── -->
-        <mxCell id="tasks" value="Two Binary Tasks:&lt;br/&gt;&lt;b&gt;Detection:&lt;/b&gt; Faulty vs Non-faulty (230 img)&lt;br/&gt;&lt;b&gt;Diagnosis:&lt;/b&gt; Block vs PatchWork (88 img)"
+        <mxCell id="tasks" value="Two Binary Tasks:&lt;br/&gt;&lt;b&gt;Detection:&lt;/b&gt; Faulty vs Non-faulty (228 img)&lt;br/&gt;&lt;b&gt;Diagnosis:&lt;/b&gt; Block vs PatchWork (86 img)"
           style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontColor=#333333;fontSize=9;"
           vertex="1" parent="1">
-          <mxGeometry x="730" y="90" width="250" height="70" as="geometry"/>
+          <mxGeometry x="370" y="90" width="230" height="70" as="geometry"/>
         </mxCell>
 
         <!-- ── OPTIMIZER NOTE ── -->
         <mxCell id="optim" value="Optimizer: AdamW&lt;br/&gt;LR: 1e-4 (1e-5 for fine-tuning)&lt;br/&gt;Loss: Binary Cross-Entropy&lt;br/&gt;Batch: 32 | Epochs: 50 (max)"
           style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontColor=#333333;fontSize=9;"
           vertex="1" parent="1">
-          <mxGeometry x="730" y="200" width="250" height="70" as="geometry"/>
+          <mxGeometry x="370" y="190" width="230" height="70" as="geometry"/>
         </mxCell>
 
       </root>

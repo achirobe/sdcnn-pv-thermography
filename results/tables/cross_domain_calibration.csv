@@ -1,0 +1,2 @@
+uncalibrated_f1_full,uncalibrated_prec_full,uncalibrated_rec_full,uncalibrated_acc_full,n_cal,n_splits,platt_f1_mean,platt_f1_std,platt_prec_mean,platt_rec_mean,platt_acc_mean,base_f1_test_mean,f1_improvement
+0.4519774011299435,0.291970802919708,1.0,0.291970802919708,20,50,0.0,0.0,0.0,0.0,0.7094017094017094,0.45033112582781465,-0.45033112582781465

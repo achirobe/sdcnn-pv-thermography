@@ -1,0 +1,4 @@
+label,task,mean_f1,std_f1,mean_prec,mean_rec,mean_acc
+SDCNN-2block (shallow),diagnosis,0.9333333333333332,0.13333333333333336,0.9,1.0,0.9
+SDCNN-3block (proposed),diagnosis,1.0,0.0,1.0,1.0,1.0
+SDCNN-4block (deep),diagnosis,1.0,0.0,1.0,1.0,1.0

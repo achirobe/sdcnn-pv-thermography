@@ -61,13 +61,28 @@ def plot_cv_boxplot(task: str, save: bool = True):
                 showmeans=True,
                 meanprops={"marker": "D", "markerfacecolor": "white",
                            "markeredgecolor": "black", "markersize": 7},
+                medianprops={"color": "black", "linewidth": 2.5},
+                boxprops={"linewidth": 1.5},
+                whiskerprops={"linewidth": 1.5},
+                capprops={"linewidth": 1.5},
                 ax=ax)
     sns.stripplot(data=df, x="arch_label", y="f1", order=order,
                   color=".25", size=4, alpha=0.5, ax=ax)
+
+    # Annotate boxes that collapse to a line (Q1 == Q3) so the reader
+    # knows the median IS there — the box just has zero height.
+    for i, label in enumerate(order):
+        vals = df.loc[df["arch_label"] == label, "f1"].values
+        q1, q3 = np.percentile(vals, [25, 75])
+        if np.isclose(q1, q3, atol=1e-6):
+            ax.text(i, np.median(vals) + 0.012, "med=Q1=Q3",
+                    ha="center", va="bottom", fontsize=7, color="black",
+                    fontstyle="italic")
+
     ax.set_ylabel("F1 Score (5-fold CV)")
     ax.set_xlabel("")
     ax.set_title(f"{task.capitalize()} task — per-fold F1")
-    ax.set_ylim(max(0, df["f1"].min() - 0.05), min(1.05, df["f1"].max() + 0.05))
+    ax.set_ylim(max(0, df["f1"].min() - 0.05), min(1.08, df["f1"].max() + 0.08))
     plt.tight_layout()
 
     if save:

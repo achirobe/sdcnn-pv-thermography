@@ -1,0 +1,3 @@
+label,task,mean_f1,std_f1,mean_prec,mean_rec,mean_acc
+128×128 (fast),diagnosis,1.0,0.0,1.0,1.0,1.0
+224×224 (standard),diagnosis,1.0,0.0,1.0,1.0,1.0

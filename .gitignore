@@ -35,3 +35,12 @@ manuscript/
 
 # Large numpy prediction arrays — not needed for reproducibility
 results/tables/preds_*.npy
+
+# Scratch / one-off scripts and submission admin (not part of reproducibility)
+continue_ablation.py
+run_ablation_cv.py
+finish_resolution_diagnosis.py
+make_combined_ablation_charts.py
+make_cover_letter.py
+requirements_backup.txt
+results/ablation_cv_run.log

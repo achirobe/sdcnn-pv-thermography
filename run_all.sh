@@ -32,7 +32,7 @@ run_exp() {
 }
 
 echo "════════════════════════════════════════════"
-echo " PV-IRT-EAAI — Full Experiment Pipeline"
+echo " PV-IRT Fault Detection Pipeline"
 echo "════════════════════════════════════════════"
 
 run_exp "Exp01: 5-fold CV — SDCNN + VGG-16" \

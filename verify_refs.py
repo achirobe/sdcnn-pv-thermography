@@ -2,9 +2,9 @@
 Cross-check every DOI-bearing entry in references.bib against Crossref metadata.
 Reports title / first-author / year / volume / issue / pages mismatches.
 """
-import re, json, time, urllib.request, urllib.error, sys
+import re, json, time, urllib.request, urllib.error, sys, os
 
-BIB = "/Users/reamy/research/pv-irt-eaai/manuscript/references.bib"
+BIB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manuscript", "references.bib")
 MAILTO = "rachirobe@gmail.com"
 
 def parse_bib(path):

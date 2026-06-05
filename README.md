@@ -1,29 +1,45 @@
-# SDCNN-VGG16 IRT-PV — EAAI Submission
+# SDCNN — PV Fault Detection from Infrared Thermography
 
 > **"SDCNN: A Shallow Dense Convolutional Neural Network for Automated Fault Detection
-> and Diagnosis in Photovoltaic Systems via Infrared Thermography"**  
-> Submitted to *Engineering Applications of Artificial Intelligence* (Elsevier Q1)
+> and Diagnosis in Photovoltaic Systems via Infrared Thermography — A Case Study from
+> Navrongo, Ghana"**
+
+This repository contains the complete code and per-fold results for an automated
+photovoltaic (PV) fault-detection study using handheld infrared thermography (IRT)
+images collected at the Navrongo VRA Solar Plant in Ghana's Upper East Region.
+
+**This work is submitted in partial fulfilment of the requirements for the degree of
+Master of Philosophy (MPhil) in Mechanical Engineering, Thermofluids and Energy Systems
+option, at the Kwame Nkrumah University of Science and Technology (KNUST).**
+
+**Author and sole contributor:** Reamy Womodowe Achirobe
 
 ---
 
 ## Overview
 
-Complete codebase and results for an EAAI journal paper on automated PV fault detection from UAV-acquired infrared thermography (IRT) images.
+Code and results for automated PV fault detection from handheld-acquired infrared
+thermography (IRT) images.
 
 **Dataset:** The Ghana IRT-PV dataset is hosted in a separate private repository.
-Access requires owner approval — request via [github.com/achirobe/ghana-irt-pv-dataset](https://github.com/achirobe/ghana-irt-pv-dataset) or email rachirobe@gmail.com.
+Access requires owner approval — request via
+[github.com/achirobe/ghana-irt-pv-dataset](https://github.com/achirobe/ghana-irt-pv-dataset)
+or email rachirobe@gmail.com.
 
 **Two classification tasks:**
 | Task | Images | Classes | Balance |
 |------|--------|---------|---------|
-| Detection | 230 | Faulty / Non-faulty | 50/50 |
-| Diagnosis | 88 | Block / PatchWork | 50/50 |
+| Detection | 228 | Faulty / Non-faulty | 50/50 |
+| Diagnosis | 86 | Block / PatchWork | 50/50 |
 
 **Four models compared:**
 - **SDCNN** (proposed) — custom 3-block CNN, 11.2M params, trained from scratch
 - **VGG-16** — frozen ImageNet backbone + Flatten head
 - **MobileNetV2** — frozen ImageNet backbone + GAP head
 - **EfficientNet-B0** — frozen ImageNet backbone + GAP head
+
+A Global-Average-Pooling variant of SDCNN (0.11M params) is provided as an
+efficiency ablation for memory-constrained edge hardware.
 
 ---
 
@@ -34,21 +50,29 @@ Access requires owner approval — request via [github.com/achirobe/ghana-irt-pv
 |-------|----|-----------|--------|----------|
 | SDCNN (proposed) | 0.884 ± 0.064 | 0.931 ± 0.053 | 0.842 ± 0.073 | 0.890 ± 0.057 |
 | VGG-16 | **0.943 ± 0.056** | **0.947 ± 0.044** | **0.939 ± 0.059** | **0.943 ± 0.056** |
-| MobileNetV2 | 0.898 ± 0.065 | — | — | — |
-| EfficientNet-B0 | *(pending exp02)* | — | — | — |
+| MobileNetV2 | 0.898 ± 0.065 | 0.942 ± 0.041 | 0.860 ± 0.094 | 0.903 ± 0.059 |
+| EfficientNet-B0 | 0.909 ± 0.035 | 0.944 ± 0.039 | 0.878 ± 0.047 | 0.912 ± 0.035 |
+| SDCNN-GAP (0.11M) | 0.839 ± 0.044 | 0.979 ± 0.043 | 0.737 ± 0.066 | 0.858 ± 0.039 |
 
 ### Fault Diagnosis
 | Model | F1 | Precision | Recall | Accuracy |
 |-------|----|-----------|--------|----------|
 | SDCNN (proposed) | **1.000 ± 0.000** | **1.000** | **1.000** | **1.000** |
-| VGG-16 | 0.990 ± 0.024 | 0.980 ± 0.045 | 1.000 ± 0.000 | 0.989 ± 0.025 |
+| VGG-16 | 0.989 ± 0.024 | 0.980 ± 0.045 | 1.000 ± 0.000 | 0.989 ± 0.025 |
+| MobileNetV2 | 0.989 ± 0.024 | 0.980 ± 0.045 | 1.000 ± 0.000 | 0.989 ± 0.025 |
+| EfficientNet-B0 | 0.989 ± 0.024 | 0.980 ± 0.045 | 1.000 ± 0.000 | 0.989 ± 0.025 |
+
+No pairwise difference on detection is statistically significant at α = 0.05
+(five paired folds; paired t-test and Wilcoxon). Zero-shot cross-domain transfer
+to the Pierdicca Italian IRT-PV dataset is a representational transfer failure
+(ROC-AUC ≈ 0.59) not recoverable by recalibration.
 
 ---
 
 ## Repo Structure
 
 ```
-pv-irt-eaai/
+sdcnn-pv-thermography/
 ├── src/
 │   ├── config.py                    # all paths + hyperparameters (SEED=42)
 │   ├── utils/seeds.py               # set_seeds(42) for reproducibility
@@ -70,23 +94,20 @@ pv-irt-eaai/
 │   ├── exp04_augment_ablation/      # with/without augmentation
 │   ├── exp05_gradcam/               # Grad-CAM figure generation
 │   ├── exp06_cross_domain/          # zero-shot Pierdicca evaluation
-│   ├── exp07_hyperparam_search/     # LR×Dropout grid (conditional on baseline F1)
-│   └── exp08_ablation_extended/     # depth / dropout / fine-tuning / resolution
+│   ├── exp07_hyperparam_search/     # LR×Dropout grid
+│   ├── exp08_ablation_extended/     # depth / dropout / fine-tuning / resolution
+│   ├── exp09_sdcnn_gap/             # SDCNN Global-Average-Pooling head ablation
+│   └── exp10_crossdomain_calibration/  # Platt recalibration of cross-domain scores
 ├── results/
 │   ├── tables/                      # CSV results (committed to git)
 │   ├── figures/                     # PNG figures at 300 dpi (committed)
 │   └── logs/                        # .keras weights (git-ignored — too large)
 ├── diagrams/
-│   ├── methodology_flowchart.drawio # draw.io end-to-end pipeline
-│   └── sdcnn_architecture.drawio    # draw.io SDCNN block diagram
-├── manuscript/
-│   ├── main.tex                     # EAAI LaTeX manuscript (elsarticle 5p)
-│   ├── main_final.tex               # auto-filled version (via fill_results.py)
-│   ├── references.bib               # BibTeX references
-│   ├── compile.sh                   # one-command compilation
-│   └── figures/                     # figures for LaTeX (auto-copied by compile.sh)
-├── generate_figures.py              # generate all paper figures from results
-├── fill_results.py                  # auto-fill LaTeX \todo{} with actual numbers
+│   ├── methodology_flowchart.drawio
+│   ├── cross_domain_pipeline.drawio
+│   └── sdcnn_architecture.drawio
+├── verify_refs.py                   # Crossref DOI verification for the bibliography
+├── generate_figures.py              # generate all figures from results
 └── run_all.sh                       # sequential experiment runner
 ```
 
@@ -103,8 +124,8 @@ tensorflow-metal (Apple Silicon GPU)
 ```
 
 ```bash
-git clone https://github.com/achirobe/pv-irt-eaai.git
-cd pv-irt-eaai
+git clone https://github.com/achirobe/sdcnn-pv-thermography.git
+cd sdcnn-pv-thermography
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -112,10 +133,10 @@ pip install -r requirements.txt
 ### Data Setup
 
 ```
-data/detection/faulty/      # 115 IRT images of faulty panels
-data/detection/non-faulty/  # 115 IRT images of healthy panels
-data/diagnosis/Block/       # 44 images — block-type fault pattern
-data/diagnosis/PatchWork/   # 44 images — patchwork-type fault pattern
+data/detection/faulty/      # 114 IRT images of faulty panels
+data/detection/non-faulty/  # 114 IRT images of healthy panels
+data/diagnosis/Block/       # 43 images — block-type fault pattern
+data/diagnosis/PatchWork/   # 43 images — patchwork-type fault pattern
 ```
 
 ### Running All Experiments
@@ -130,14 +151,14 @@ python experiments/exp04_augment_ablation/run.py
 python experiments/exp05_gradcam/run.py
 python experiments/exp06_cross_domain/run.py
 python experiments/exp08_ablation_extended/run.py
+python experiments/exp09_sdcnn_gap/run.py
+python experiments/exp10_crossdomain_calibration/run.py
 ```
 
-### Generating Figures and Manuscript
+### Generating Figures
 
 ```bash
-python generate_figures.py       # generates all PNG figures
-python fill_results.py           # fills \todo{} in LaTeX + prints Markdown summary
-cd manuscript && bash compile.sh # copies figures + compiles PDF
+python generate_figures.py       # generates all PNG figures from results
 ```
 
 ---
@@ -175,21 +196,8 @@ external/kaggle_irt_pv/kaggle_dataset/
 | Max epochs | 50 |
 | Early stopping | patience=10, monitor=val_loss |
 
----
-
-## Citation
-
-```bibtex
-@article{achirobe2026sdcnn,
-  author  = {Achirobe, Reamy Womodowe},
-  title   = {{SDCNN}: A Shallow Dense Convolutional Neural Network for Automated
-             Fault Detection and Diagnosis in Photovoltaic Systems via
-             Infrared Thermography},
-  journal = {Engineering Applications of Artificial Intelligence},
-  year    = {2026},
-  note    = {Under review}
-}
-```
+Deduplication was applied at the physical-panel level, so no panel appears in both
+the training and validation partitions of any fold.
 
 ---
 

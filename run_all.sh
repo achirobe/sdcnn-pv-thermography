@@ -65,6 +65,14 @@ if [ "$NO_ABLATION" -eq 0 ]; then
     results/tables/ablation_all.csv
 fi
 
+run_exp "Exp09: SDCNN Global-Average-Pooling head ablation" \
+  experiments/exp09_sdcnn_gap/run.py \
+  results/tables/cv_detection_sdcnn_gap.csv
+
+run_exp "Exp10: Cross-domain Platt recalibration analysis" \
+  experiments/exp10_crossdomain_calibration/run.py \
+  results/tables/cross_domain_calibration.csv
+
 echo ""
 echo "════════════════════════════════════════════"
 echo " Generating all publication figures..."

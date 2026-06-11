@@ -44,3 +44,10 @@ make_combined_ablation_charts.py
 make_cover_letter.py
 requirements_backup.txt
 results/ablation_cv_run.log
+
+# Manuscript-generation tooling and figures (kept local, not in the code repo)
+generate_figures.py
+fill_results.py
+verify_refs.py
+diagrams/
+results/figures/

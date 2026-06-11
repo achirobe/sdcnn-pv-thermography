@@ -75,26 +75,6 @@ run_exp "Exp10: Cross-domain Platt recalibration analysis" \
 
 echo ""
 echo "════════════════════════════════════════════"
-echo " Generating all publication figures..."
-echo "════════════════════════════════════════════"
-$PYTHON generate_figures.py
-
-echo ""
-echo "════════════════════════════════════════════"
-echo " Filling LaTeX result placeholders..."
-echo "════════════════════════════════════════════"
-$PYTHON fill_results.py
-
-echo ""
-echo "════════════════════════════════════════════"
-echo " Compiling manuscript PDF..."
-echo "════════════════════════════════════════════"
-cd manuscript && bash compile.sh && cd ..
-
-echo ""
-echo "════════════════════════════════════════════"
-echo " ALL DONE"
-echo " PDF: manuscript/main_final.pdf"
-echo " Figures: results/figures/"
-echo " Tables:  results/tables/"
+echo " ALL EXPERIMENTS DONE"
+echo " Per-fold result tables: results/tables/"
 echo "════════════════════════════════════════════"

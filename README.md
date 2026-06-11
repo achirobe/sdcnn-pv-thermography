@@ -92,22 +92,15 @@ sdcnn-pv-thermography/
 │   ├── exp02_modern_baselines/      # MobileNetV2 + EfficientNet-B0
 │   ├── exp03_significance/          # statistical significance testing
 │   ├── exp04_augment_ablation/      # with/without augmentation
-│   ├── exp05_gradcam/               # Grad-CAM figure generation
+│   ├── exp05_gradcam/               # Grad-CAM explainability maps
 │   ├── exp06_cross_domain/          # zero-shot Pierdicca evaluation
 │   ├── exp07_hyperparam_search/     # LR×Dropout grid
 │   ├── exp08_ablation_extended/     # depth / dropout / fine-tuning / resolution
 │   ├── exp09_sdcnn_gap/             # SDCNN Global-Average-Pooling head ablation
 │   └── exp10_crossdomain_calibration/  # Platt recalibration of cross-domain scores
 ├── results/
-│   ├── tables/                      # CSV results (committed to git)
-│   ├── figures/                     # PNG figures at 300 dpi (committed)
+│   ├── tables/                      # per-fold CSV results (committed to git)
 │   └── logs/                        # .keras weights (git-ignored — too large)
-├── diagrams/
-│   ├── methodology_flowchart.drawio
-│   ├── cross_domain_pipeline.drawio
-│   └── sdcnn_architecture.drawio
-├── verify_refs.py                   # Crossref DOI verification for the bibliography
-├── generate_figures.py              # generate all figures from results
 └── run_all.sh                       # sequential experiment runner
 ```
 
@@ -155,11 +148,7 @@ python experiments/exp09_sdcnn_gap/run.py
 python experiments/exp10_crossdomain_calibration/run.py
 ```
 
-### Generating Figures
-
-```bash
-python generate_figures.py       # generates all PNG figures from results
-```
+Each experiment writes its per-fold metrics to `results/tables/` as CSV files.
 
 ---
 
